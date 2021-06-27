@@ -72,9 +72,13 @@ class StringCalculatorService
             $numbersSplitByNewLine = explode('\n', $numbers);
             $numbers = $numbersSplitByNewLine[1];
         }
-        $numbers = str_replace('\n', $this->delimiters[0], $numbers);
-        $numbers = explode($this->delimiters[0], $numbers);
-        return $numbers;
+
+        $numbers = str_replace('\n', ',', $numbers);
+        foreach ($this->delimiters as $delimiter) {
+            $numbers = str_replace($delimiter, ',', $numbers);
+        }
+
+        return explode(',', $numbers);
     }
 
     /**
@@ -96,9 +100,17 @@ class StringCalculatorService
 
         if ($this->isDifferentDelimiter($numbers)) {
             $numbersSplitByNewLine = explode('\n', $numbers);
-            $delimiters = [str_replace('//', '', $numbersSplitByNewLine[0])];
-            if ($this->isDelimiterSpecifyByBrackets($delimiters[0])) {
-                $delimiters[0] = [substr($delimiters[0], 1, -1)];
+            $specifyDelimiters = str_replace('//', '', $numbersSplitByNewLine[0]);
+            preg_match_all('/.*?\[.*?\]/', $specifyDelimiters, $multipleDelimiters);
+            if (!empty($multipleDelimiters[0])) {
+                foreach ($multipleDelimiters[0] as $index => $multipleDelimiter) {
+                    $delimiters[$index] = substr($multipleDelimiter, 1, -1);
+                }
+            } else {
+                $delimiters[0] = $specifyDelimiters;
+                if ($this->isDelimiterSpecifyByBrackets($delimiters[0])) {
+                    $delimiters[0] = [substr($delimiters[0], 1, -1)];
+                }
             }
         }
 
@@ -160,10 +172,10 @@ class StringCalculatorService
     }
 
     /**
-     * @param $delimiter
+     * @param string $delimiter
      * @return bool
      */
-    private function isDelimiterSpecifyByBrackets($delimiter): bool
+    private function isDelimiterSpecifyByBrackets(string $delimiter): bool
     {
         return substr($delimiter, 0, 1) === '[' &&
             substr($delimiter, -1) === ']';
