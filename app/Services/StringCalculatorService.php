@@ -11,6 +11,9 @@ class StringCalculatorService
     //
     public function add(string $string): int
     {
+        if (!empty($string)) {
+            return $string;
+        }
         return 0;
     }
 }

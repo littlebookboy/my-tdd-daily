@@ -15,13 +15,11 @@ class StringCalculatorServiceTest extends TestCase
         $this->assertEquals(0, $sum);
     }
 
-
     public function test_add_one_got_one()
     {
         $sum = $this->stringCalculatorService->add('1');
         $this->assertEquals(1, $sum);
     }
-
 
     protected function setUp(): void
     {
