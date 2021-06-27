@@ -2,13 +2,14 @@
 
 namespace App\Services;
 
-use Yish\Generators\Foundation\Service\Service;
-
 class StringCalculatorService
 {
     protected $repository;
 
-    //
+    /**
+     * @param string $numbers
+     * @return int
+     */
     public function add(string $numbers): int
     {
         if (empty($numbers)) {
@@ -16,12 +17,7 @@ class StringCalculatorService
         }
 
         if ($this->isTwoMoreNumbers($numbers)) {
-            $numbers = $this->splitNumbers($numbers);
-            $sum = 0;
-            foreach ($numbers as $number) {
-                $sum += $number;
-            }
-            return $sum;
+            return $this->sum($numbers);
         }
 
         return $numbers;
@@ -44,5 +40,19 @@ class StringCalculatorService
     {
         $numbers = explode(',', $numbers);
         return $numbers;
+    }
+
+    /**
+     * @param string $numbers
+     * @return int
+     */
+    public function sum(string $numbers)
+    {
+        $numbers = $this->splitNumbers($numbers);
+        $sum = 0;
+        foreach ($numbers as $number) {
+            $sum += $number;
+        }
+        return $sum;
     }
 }
