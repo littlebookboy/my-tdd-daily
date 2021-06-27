@@ -97,9 +97,7 @@ class StringCalculatorService
         if ($this->isDifferentDelimiter($numbers)) {
             $numbersSplitByNewLine = explode('\n', $numbers);
             $delimiter = str_replace('//', '', $numbersSplitByNewLine[0]);
-            if (substr($delimiter, 0, 1) === '[' &&
-                substr($delimiter, -1) === ']'
-            ) {
+            if ($this->isDelimiterSpecifyByBrackets($delimiter)) {
                 $delimiter = substr($delimiter, 1, -1);
             }
         }
@@ -159,5 +157,15 @@ class StringCalculatorService
             return $number < 1000;
         });
         return $numbers;
+    }
+
+    /**
+     * @param $delimiter
+     * @return bool
+     */
+    private function isDelimiterSpecifyByBrackets($delimiter): bool
+    {
+        return substr($delimiter, 0, 1) === '[' &&
+            substr($delimiter, -1) === ']';
     }
 }

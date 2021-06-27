@@ -144,6 +144,15 @@ class StringCalculatorServiceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_get_sum_when_using_multiple_delimiters()
+    {
+        $this->givenNumbers('//[*][%]\n1*2%3');
+        $this->sumShouldBe(6);
+    }
+
+    /**
      * @param string $numbers
      * @return void
      */
