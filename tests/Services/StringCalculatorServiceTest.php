@@ -34,6 +34,12 @@ class StringCalculatorServiceTest extends TestCase
         $this->sumShouldBe(55);
     }
 
+    public function test_add_handle_new_lines_numbers_string()
+    {
+        $this->givenNumbers('1\n2,3');
+        $this->sumShouldBe(6);
+    }
+
     /**
      * @param string $numbers
      * @return void
