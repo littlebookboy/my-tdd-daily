@@ -31,9 +31,7 @@ class StringCalculatorService
             $numbers = [$numbers];
         }
 
-        $numbers = array_filter($numbers, function ($number) {
-            return $number < 1000;
-        });
+        $numbers = $this->getLessThanOneThousandNumbers($numbers);
 
         $this->throwExceptionWhenNumberIsNegative($numbers);
 
@@ -144,5 +142,17 @@ class StringCalculatorService
     private function triggerStringCalculatorServiceAddOccurredEvent(): void
     {
         event(StringCalculatorServiceAddOccurred::class);
+    }
+
+    /**
+     * @param array $numbers
+     * @return array
+     */
+    private function getLessThanOneThousandNumbers(array $numbers): array
+    {
+        $numbers = array_filter($numbers, function ($number) {
+            return $number < 1000;
+        });
+        return $numbers;
     }
 }
