@@ -2,6 +2,7 @@
 
 namespace Tests\Services;
 
+use App\Exceptions\StringCalculatorServiceException;
 use App\Services\StringCalculatorService;
 use PHPUnit\Framework\TestCase;
 
@@ -62,6 +63,15 @@ class StringCalculatorServiceTest extends TestCase
     {
         $this->givenNumbers('//;\n1;2');
         $this->sumShouldBe(3);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_get_exception_by_negative_numbers()
+    {
+        $this->expectException(StringCalculatorServiceException::class);
+        $this->givenNumbers('-1');
     }
 
     /**
