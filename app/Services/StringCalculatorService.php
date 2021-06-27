@@ -9,10 +9,10 @@ class StringCalculatorService
     protected $repository;
 
     //
-    public function add(string $string): int
+    public function add(string $numbers): int
     {
-        if (!empty($string)) {
-            return $string;
+        if (!empty($numbers)) {
+            return $numbers;
         }
         return 0;
     }

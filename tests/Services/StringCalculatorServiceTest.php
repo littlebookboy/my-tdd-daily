@@ -8,17 +8,32 @@ use PHPUnit\Framework\TestCase;
 class StringCalculatorServiceTest extends TestCase
 {
     private $stringCalculatorService;
+    private $sum;
 
     public function test_add_empty_string_got_zero()
     {
-        $sum = $this->stringCalculatorService->add('');
-        $this->assertEquals(0, $sum);
+        $this->givenNumbers('');
+        $this->sumShouldBe(0);
     }
 
     public function test_add_one_got_one()
     {
-        $sum = $this->stringCalculatorService->add('1');
-        $this->assertEquals(1, $sum);
+        $this->givenNumbers('1');
+        $this->sumShouldBe(1);
+    }
+
+    /**
+     * @param string $numbers
+     * @return void
+     */
+    public function givenNumbers(string $numbers): void
+    {
+        $this->sum = $this->stringCalculatorService->add($numbers);
+    }
+
+    public function sumShouldBe($expected): void
+    {
+        $this->assertEquals($expected, $this->sum);
     }
 
     protected function setUp(): void
