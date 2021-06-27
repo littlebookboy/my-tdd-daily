@@ -2,9 +2,11 @@
 
 namespace Tests\Services;
 
+use App\Events\StringCalculatorServiceAddOccurred;
 use App\Exceptions\StringCalculatorServiceException;
 use App\Services\StringCalculatorService;
-use PHPUnit\Framework\TestCase;
+use Illuminate\Support\Facades\Event;
+use Tests\TestCase;
 
 class StringCalculatorServiceTest extends TestCase
 {
@@ -110,6 +112,20 @@ class StringCalculatorServiceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_trigger_event_after_calling_add()
+    {
+        Event::fake();
+
+        $this->givenNumbers('1');
+        $this->givenNumbers('1,2');
+        $this->givenNumbers('1,2,3,4,5');
+
+        Event::assertDispatchedTimes(StringCalculatorServiceAddOccurred::class, 3);
+    }
+
+    /**
      * @param string $numbers
      * @return void
      */
@@ -126,5 +142,6 @@ class StringCalculatorServiceTest extends TestCase
     protected function setUp(): void
     {
         $this->stringCalculatorService = new StringCalculatorService();
+        parent::setUp();
     }
 }
