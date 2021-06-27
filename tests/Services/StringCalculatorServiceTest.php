@@ -10,37 +10,55 @@ class StringCalculatorServiceTest extends TestCase
     private $stringCalculatorService;
     private $sum;
 
-    public function test_add_empty_string_got_zero()
+    /**
+     * @test
+     */
+    public function it_should_get_zero_by_add_empty_string()
     {
         $this->givenNumbers('');
         $this->sumShouldBe(0);
     }
 
-    public function test_add_one_got_one()
+    /**
+     * @test
+     */
+    public function it_should_get_sum_by_add_one_number()
     {
         $this->givenNumbers('1');
         $this->sumShouldBe(1);
     }
 
-    public function test_add_two_got_sum()
+    /**
+     * @test
+     */
+    public function it_should_get_sum_by_add_two_numbers()
     {
         $this->givenNumbers('1,2');
         $this->sumShouldBe(3);
     }
 
-    public function test_add_unknown_numbers_got_sum()
+    /**
+     * @test
+     */
+    public function it_should_get_sum_by_add_unknown_amount_numbers()
     {
         $this->givenNumbers(implode(',', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
         $this->sumShouldBe(55);
     }
 
-    public function test_add_handle_new_lines_numbers_string()
+    /**
+     * @test
+     */
+    public function it_should_get_sum_by_new_line_numbers()
     {
         $this->givenNumbers('1\n2,3');
         $this->sumShouldBe(6);
     }
 
-    public function test_support_different_delimiters()
+    /**
+     * @test
+     */
+    public function it_should_get_sum_when_using_different_delimiters()
     {
         $this->givenNumbers('//;\n1;2');
         $this->sumShouldBe(3);
