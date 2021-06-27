@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use App\Exceptions\StringCalculatorServiceException;
+
 class StringCalculatorService
 {
     protected $repository;
@@ -18,10 +20,12 @@ class StringCalculatorService
         }
 
         if ($this->isTwoMoreNumbers($numbers)) {
-            return $this->sum($this->splitNumbers($numbers));
+            $numbers = $this->splitNumbers($numbers);
+        } else {
+            $numbers = [$numbers];
         }
 
-        return $numbers;
+        return $this->sum($numbers);
     }
 
     /**
