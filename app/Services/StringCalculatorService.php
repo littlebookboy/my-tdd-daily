@@ -15,9 +15,13 @@ class StringCalculatorService
             return 0;
         }
 
-        if ($this->isTwoNumbers($numbers)) {
+        if ($this->isTwoMoreNumbers($numbers)) {
             $numbers = $this->splitNumbers($numbers);
-            return $numbers[0] + $numbers[1];
+            $sum = 0;
+            foreach ($numbers as $number) {
+                $sum += $number;
+            }
+            return $sum;
         }
 
         return $numbers;
@@ -27,7 +31,7 @@ class StringCalculatorService
      * @param string $numbers
      * @return bool
      */
-    public function isTwoNumbers(string $numbers): bool
+    public function isTwoMoreNumbers(string $numbers): bool
     {
         return strpos($numbers, ',') !== false;
     }
