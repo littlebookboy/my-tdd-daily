@@ -76,6 +76,16 @@ class StringCalculatorServiceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_show_all_negative_numbers_when_two_more()
+    {
+        $this->expectException(StringCalculatorServiceException::class);
+        $this->expectErrorMessage("negatives not allowed: -1,-2,-3");
+        $this->givenNumbers('-1,-2,-3');
+    }
+
+    /**
      * @param string $numbers
      * @return void
      */
