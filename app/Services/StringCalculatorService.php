@@ -19,7 +19,7 @@ class StringCalculatorService
             return 0;
         }
 
-        if ($this->isTwoMoreNumbers($numbers)) {
+        if ($this->isMoreThanTwoNumbers($numbers)) {
             $numbers = $this->splitNumbers($numbers);
         } else {
             $numbers = [$numbers];
@@ -46,7 +46,7 @@ class StringCalculatorService
      * @param string $numbers
      * @return bool
      */
-    private function isTwoMoreNumbers(string $numbers): bool
+    private function isMoreThanTwoNumbers(string $numbers): bool
     {
         $this->delimiter = $this->delimiter($numbers);
 
