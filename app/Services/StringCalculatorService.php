@@ -38,6 +38,7 @@ class StringCalculatorService
      */
     public function splitNumbers(string $numbers)
     {
+        $numbers = str_replace('\n', ',', $numbers);
         $numbers = explode(',', $numbers);
         return $numbers;
     }
