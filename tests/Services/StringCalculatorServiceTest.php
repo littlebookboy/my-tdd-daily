@@ -126,6 +126,15 @@ class StringCalculatorServiceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_get_sum_except_greater_or_equal_than_one_thousand_numbers()
+    {
+        $this->givenNumbers('1,2,1000,1001');
+        $this->sumShouldBe(3);
+    }
+
+    /**
      * @param string $numbers
      * @return void
      */
