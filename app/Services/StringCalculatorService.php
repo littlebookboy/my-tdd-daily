@@ -8,6 +8,7 @@ class StringCalculatorService
 {
     protected $repository;
     private $delimiter;
+    private $addCalledCount = 0;
 
     /**
      * @param string $numbers
@@ -15,6 +16,8 @@ class StringCalculatorService
      */
     public function add(string $numbers): int
     {
+        $this->addCalledCount++;
+
         if (empty($numbers)) {
             return 0;
         }
@@ -118,8 +121,11 @@ class StringCalculatorService
         );
     }
 
-    public function getCalledCount()
+    /**
+     * @return int
+     */
+    public function getCalledCount(): int
     {
-
+        return $this->addCalledCount;
     }
 }
