@@ -11,6 +11,6 @@ class StringCalculatorService
     //
     public function add(string $string): int
     {
-
+        return 0;
     }
 }
