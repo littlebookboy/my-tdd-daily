@@ -5,6 +5,7 @@ namespace App\Services;
 class StringCalculatorService
 {
     protected $repository;
+    private $delimiter;
 
     /**
      * @param string $numbers
@@ -29,7 +30,12 @@ class StringCalculatorService
      */
     public function isTwoMoreNumbers(string $numbers): bool
     {
-        return strpos($numbers, ',') !== false;
+        $this->delimiter = ',';
+        if (strpos($numbers, '//') !== false) {
+            $numbersSplitByNewLine = explode('\n', $numbers);
+            $this->delimiter = str_replace('//', '', $numbersSplitByNewLine[0]);
+        }
+        return strpos($numbers, $this->delimiter) !== false;
     }
 
     /**
@@ -38,8 +44,12 @@ class StringCalculatorService
      */
     public function splitNumbers(string $numbers)
     {
-        $numbers = str_replace('\n', ',', $numbers);
-        $numbers = explode(',', $numbers);
+        if (strpos($numbers, '//') !== false) {
+            $numbersSplitByNewLine = explode('\n', $numbers);
+            $numbers = $numbersSplitByNewLine[1];
+        }
+        $numbers = str_replace('\n', $this->delimiter, $numbers);
+        $numbers = explode($this->delimiter, $numbers);
         return $numbers;
     }
 
