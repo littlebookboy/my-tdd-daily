@@ -18,19 +18,18 @@ class StringCalculatorService
         }
 
         if ($this->isTwoMoreNumbers($numbers)) {
-            return $this->sum($numbers);
+            return $this->sum($this->splitNumbers($numbers));
         }
 
         return $numbers;
     }
 
     /**
-     * @param string $numbers
+     * @param array $numbers
      * @return int
      */
-    private function sum(string $numbers)
+    private function sum(array $numbers): int
     {
-        $numbers = $this->splitNumbers($numbers);
         $sum = 0;
         foreach ($numbers as $number) {
             $sum += $number;
@@ -44,26 +43,48 @@ class StringCalculatorService
      */
     private function isTwoMoreNumbers(string $numbers): bool
     {
-        $this->delimiter = ',';
-        if (strpos($numbers, '//') !== false) {
-            $numbersSplitByNewLine = explode('\n', $numbers);
-            $this->delimiter = str_replace('//', '', $numbersSplitByNewLine[0]);
-        }
+        $this->delimiter = $this->delimiter($numbers);
+
         return strpos($numbers, $this->delimiter) !== false;
     }
 
     /**
      * @param string $numbers
-     * @return false|string[]
+     * @return array
      */
-    private function splitNumbers(string $numbers)
+    private function splitNumbers(string $numbers): array
     {
-        if (strpos($numbers, '//') !== false) {
+        if ($this->isDifferentDelimiter($numbers)) {
             $numbersSplitByNewLine = explode('\n', $numbers);
             $numbers = $numbersSplitByNewLine[1];
         }
         $numbers = str_replace('\n', $this->delimiter, $numbers);
         $numbers = explode($this->delimiter, $numbers);
         return $numbers;
+    }
+
+    /**
+     * @param string $numbers
+     * @return bool
+     */
+    private function isDifferentDelimiter(string $numbers): bool
+    {
+        return strpos($numbers, '//') !== false;
+    }
+
+    /**
+     * @param string $numbers
+     * @return string
+     */
+    private function delimiter(string $numbers): string
+    {
+        $delimiter = ',';
+
+        if ($this->isDifferentDelimiter($numbers)) {
+            $numbersSplitByNewLine = explode('\n', $numbers);
+            $delimiter = str_replace('//', '', $numbersSplitByNewLine[0]);
+        }
+
+        return $delimiter;
     }
 }
