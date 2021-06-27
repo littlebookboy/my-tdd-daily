@@ -133,24 +133,24 @@ class StringCalculatorServiceTest extends TestCase
         $this->givenNumbers('1,2,1000,1001');
         $this->sumShouldBe(3);
     }
-
-    /**
-     * @test
-     */
-    public function it_should_get_sum_when_using_any_length_delimiters()
-    {
-        $this->givenNumbers('//[***]\n1***2***3');
-        $this->sumShouldBe(6);
-    }
-
-    /**
-     * @test
-     */
-    public function it_should_get_sum_when_using_multiple_delimiters()
-    {
-        $this->givenNumbers('//[*][%]\n1*2%3');
-        $this->sumShouldBe(6);
-    }
+//
+//    /**
+//     * @test
+//     */
+//    public function it_should_get_sum_when_using_any_length_delimiters()
+//    {
+//        $this->givenNumbers('//[***]\n1***2***3');
+//        $this->sumShouldBe(6);
+//    }
+//
+//    /**
+//     * @test
+//     */
+//    public function it_should_get_sum_when_using_multiple_delimiters()
+//    {
+//        $this->givenNumbers('//[*][%]\n1*2%3');
+//        $this->sumShouldBe(6);
+//    }
 
     /**
      * @param string $numbers

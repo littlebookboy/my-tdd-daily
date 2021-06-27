@@ -8,7 +8,7 @@ use App\Exceptions\StringCalculatorServiceException;
 class StringCalculatorService
 {
     protected $repository;
-    private $delimiter;
+    private $delimiters;
     private $addCalledCount = 0;
 
     /**
@@ -57,9 +57,9 @@ class StringCalculatorService
      */
     private function isMoreThanTwoNumbers(string $numbers): bool
     {
-        $this->delimiter = $this->delimiter($numbers);
+        $this->delimiters = $this->delimiter($numbers);
 
-        return strpos($numbers, $this->delimiter) !== false;
+        return strpos($numbers, $this->delimiters[0]) !== false;
     }
 
     /**
@@ -72,8 +72,8 @@ class StringCalculatorService
             $numbersSplitByNewLine = explode('\n', $numbers);
             $numbers = $numbersSplitByNewLine[1];
         }
-        $numbers = str_replace('\n', $this->delimiter, $numbers);
-        $numbers = explode($this->delimiter, $numbers);
+        $numbers = str_replace('\n', $this->delimiters[0], $numbers);
+        $numbers = explode($this->delimiters[0], $numbers);
         return $numbers;
     }
 
@@ -88,21 +88,21 @@ class StringCalculatorService
 
     /**
      * @param string $numbers
-     * @return string
+     * @return array
      */
-    private function delimiter(string $numbers): string
+    private function delimiter(string $numbers): array
     {
-        $delimiter = ',';
+        $delimiters = [','];
 
         if ($this->isDifferentDelimiter($numbers)) {
             $numbersSplitByNewLine = explode('\n', $numbers);
-            $delimiter = str_replace('//', '', $numbersSplitByNewLine[0]);
-            if ($this->isDelimiterSpecifyByBrackets($delimiter)) {
-                $delimiter = substr($delimiter, 1, -1);
+            $delimiters = [str_replace('//', '', $numbersSplitByNewLine[0])];
+            if ($this->isDelimiterSpecifyByBrackets($delimiters[0])) {
+                $delimiters[0] = [substr($delimiters[0], 1, -1)];
             }
         }
 
-        return $delimiter;
+        return $delimiters;
     }
 
     /**
