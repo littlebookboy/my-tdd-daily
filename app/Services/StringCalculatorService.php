@@ -31,6 +31,10 @@ class StringCalculatorService
             $numbers = [$numbers];
         }
 
+        $numbers = array_filter($numbers, function ($number) {
+            return $number < 1000;
+        });
+
         $this->throwExceptionWhenNumberIsNegative($numbers);
 
         return $this->sum($numbers);
