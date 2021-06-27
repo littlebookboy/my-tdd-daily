@@ -28,6 +28,12 @@ class StringCalculatorServiceTest extends TestCase
         $this->sumShouldBe(3);
     }
 
+    public function test_add_unknown_numbers_got_sum()
+    {
+        $this->givenNumbers(implode(',', [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+        $this->sumShouldBe(55);
+    }
+
     /**
      * @param string $numbers
      * @return void
