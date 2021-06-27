@@ -117,4 +117,9 @@ class StringCalculatorService
             $exceptionMessage
         );
     }
+
+    public function getCalledCount()
+    {
+
+    }
 }

@@ -98,6 +98,18 @@ class StringCalculatorServiceTest extends TestCase
     }
 
     /**
+     * @test
+     */
+    public function it_should_get_add_called_count()
+    {
+        $this->givenNumbers('1');
+        $this->givenNumbers('1,2');
+        $this->givenNumbers('1,2,3,4,5');
+        $calledCount = $this->stringCalculatorService->getCalledCount();
+        $this->assertEquals(3, $calledCount);
+    }
+
+    /**
      * @param string $numbers
      * @return void
      */
