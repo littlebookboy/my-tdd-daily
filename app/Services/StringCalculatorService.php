@@ -17,9 +17,9 @@ class StringCalculatorService
      */
     public function add(string $numbers): int
     {
-        $this->addCalledCount++;
+        $this->updateAddCallingCounter();
 
-        event(StringCalculatorServiceAddOccurred::class);
+        $this->triggerStringCalculatorServiceAddOccurredEvent();
 
         if (empty($numbers)) {
             return 0;
@@ -130,5 +130,15 @@ class StringCalculatorService
     public function getCalledCount(): int
     {
         return $this->addCalledCount;
+    }
+
+    private function updateAddCallingCounter(): void
+    {
+        $this->addCalledCount++;
+    }
+
+    private function triggerStringCalculatorServiceAddOccurredEvent(): void
+    {
+        event(StringCalculatorServiceAddOccurred::class);
     }
 }
