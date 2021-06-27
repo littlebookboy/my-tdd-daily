@@ -25,6 +25,14 @@ class StringCalculatorService
             $numbers = [$numbers];
         }
 
+        foreach ($numbers as $number) {
+            throw_if(
+                $number < 0,
+                StringCalculatorServiceException::class,
+                "negatives not allowed"
+            );
+        }
+
         return $this->sum($numbers);
     }
 

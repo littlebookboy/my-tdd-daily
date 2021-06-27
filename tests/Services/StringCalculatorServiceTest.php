@@ -71,6 +71,7 @@ class StringCalculatorServiceTest extends TestCase
     public function it_should_get_exception_by_negative_numbers()
     {
         $this->expectException(StringCalculatorServiceException::class);
+        $this->expectErrorMessage("negatives not allowed");
         $this->givenNumbers('-1');
     }
 
