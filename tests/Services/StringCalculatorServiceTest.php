@@ -22,6 +22,12 @@ class StringCalculatorServiceTest extends TestCase
         $this->sumShouldBe(1);
     }
 
+    public function test_add_two_got_sum()
+    {
+        $this->givenNumbers('1,2');
+        $this->sumShouldBe(3);
+    }
+
     /**
      * @param string $numbers
      * @return void
