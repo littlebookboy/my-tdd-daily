@@ -40,6 +40,12 @@ class StringCalculatorServiceTest extends TestCase
         $this->sumShouldBe(6);
     }
 
+    public function test_support_different_delimiters()
+    {
+        $this->givenNumbers('//;\n1;2');
+        $this->sumShouldBe(3);
+    }
+
     /**
      * @param string $numbers
      * @return void
