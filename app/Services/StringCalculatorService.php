@@ -25,6 +25,8 @@ class StringCalculatorService
             $numbers = [$numbers];
         }
 
+        $this->throwExceptionWhenNumberIsNegative($numbers);
+
         return $this->sum($numbers);
     }
 
@@ -36,7 +38,6 @@ class StringCalculatorService
     {
         $sum = 0;
         foreach ($numbers as $number) {
-            $this->throwExceptionWhenNumberIsNegative($number);
             $sum += $number;
         }
         return $sum;
@@ -93,12 +94,27 @@ class StringCalculatorService
         return $delimiter;
     }
 
-    private function throwExceptionWhenNumberIsNegative($number)
+    /**
+     * @param array $numbers
+     * @throws \Throwable
+     */
+    private function throwExceptionWhenNumberIsNegative(array $numbers): void
     {
+        $negativeNumbers = [];
+        foreach ($numbers as $number) {
+            if ($number < 0) {
+                $negativeNumbers[] = $number;
+            }
+        }
+
+        $exceptionMessage = count($negativeNumbers) > 1
+            ? "negatives not allowed : " . join($negativeNumbers, ",")
+            : "negatives not allowed";
+
         throw_if(
-            $number < 0,
+            !empty($negativeNumbers),
             StringCalculatorServiceException::class,
-            "negatives not allowed"
+            $exceptionMessage
         );
     }
 }
