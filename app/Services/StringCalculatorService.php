@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Events\StringCalculatorServiceAddOccurred;
 use App\Exceptions\StringCalculatorServiceException;
 
 class StringCalculatorService
@@ -17,6 +18,8 @@ class StringCalculatorService
     public function add(string $numbers): int
     {
         $this->addCalledCount++;
+
+        event(StringCalculatorServiceAddOccurred::class);
 
         if (empty($numbers)) {
             return 0;
