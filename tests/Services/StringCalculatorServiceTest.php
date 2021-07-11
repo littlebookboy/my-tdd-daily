@@ -4,8 +4,10 @@ namespace Tests\Services;
 
 use App\Events\StringCalculatorServiceAddOccurred;
 use App\Exceptions\StringCalculatorServiceException;
+use App\Interfaces\ILogger;
 use App\Services\StringCalculatorService;
 use Illuminate\Support\Facades\Event;
+use Mockery;
 use Tests\TestCase;
 
 /**
@@ -184,6 +186,20 @@ class StringCalculatorServiceTest extends TestCase
     {
         $this->givenNumbers('//[**][%%]\n1**2%%3');
         $this->sumShouldBe(6);
+    }
+
+    /**
+     * @test
+     */
+    public function it_should_logged_sum_when_call_add()
+    {
+        // mock
+        $this->mock(ILogger::class, function (Mockery\MockInterface $mock) {
+            $mock->shouldReceive('write')->once();
+        });
+
+        $this->givenNumbers('1');
+        $this->sumShouldBe(1);
     }
 
     /**
