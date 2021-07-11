@@ -15,7 +15,19 @@ use Tests\TestCase;
  */
 class StringCalculatorServiceTest extends TestCase
 {
+    /**
+     * @var StringCalculatorService
+     */
     private $stringCalculatorService;
+
+    /**
+     * @var string
+     */
+    private $numbers = '';
+
+    /**
+     * @var int
+     */
     private $sum;
 
     /**
@@ -82,6 +94,7 @@ class StringCalculatorServiceTest extends TestCase
 
         try {
             $this->givenNumbers('-1');
+            $this->sumShouldBeThrowException();
         } catch (StringCalculatorServiceException $exception) {
             $this->assertEquals("negatives not allowed", $exception->getMessage());
             throw $exception;
@@ -98,6 +111,7 @@ class StringCalculatorServiceTest extends TestCase
 
         try {
             $this->givenNumbers('-1,-2,-3');
+            $this->sumShouldBeThrowException();
         } catch (StringCalculatorServiceException $exception) {
             $this->assertEquals("negatives not allowed : -1,-2,-3", $exception->getMessage());
             throw $exception;
@@ -110,8 +124,14 @@ class StringCalculatorServiceTest extends TestCase
     public function it_should_get_add_called_count()
     {
         $this->givenNumbers('1');
+        $this->sumShouldBe(1);
+
         $this->givenNumbers('1,2');
+        $this->sumShouldBe(3);
+
         $this->givenNumbers('1,2,3,4,5');
+        $this->sumShouldBe(15);
+
         $calledCount = $this->stringCalculatorService->getCalledCount();
         $this->assertEquals(3, $calledCount);
     }
@@ -123,9 +143,9 @@ class StringCalculatorServiceTest extends TestCase
     {
         Event::fake();
 
-        $this->givenNumbers('1');
-        $this->givenNumbers('1,2');
-        $this->givenNumbers('1,2,3,4,5');
+        $this->stringCalculatorService->add('');
+        $this->stringCalculatorService->add('');
+        $this->stringCalculatorService->add('');
 
         Event::assertDispatchedTimes(StringCalculatorServiceAddOccurred::class, 3);
     }
@@ -172,12 +192,19 @@ class StringCalculatorServiceTest extends TestCase
      */
     public function givenNumbers(string $numbers): void
     {
-        $this->sum = $this->stringCalculatorService->add($numbers);
+        $this->numbers = $numbers;
     }
 
     public function sumShouldBe($expected): void
     {
+        $this->sum = $this->stringCalculatorService->add($this->numbers);
+
         $this->assertEquals($expected, $this->sum);
+    }
+
+    public function sumShouldBeThrowException(): void
+    {
+        $this->stringCalculatorService->add($this->numbers);
     }
 
     protected function setUp(): void
