@@ -8,6 +8,11 @@ use App\Services\StringCalculatorService;
 use Illuminate\Support\Facades\Event;
 use Tests\TestCase;
 
+/**
+ * Class StringCalculatorServiceTest
+ * @package Tests\Services
+ * @group StringCalculatorServiceTest
+ */
 class StringCalculatorServiceTest extends TestCase
 {
     private $stringCalculatorService;
