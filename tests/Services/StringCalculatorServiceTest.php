@@ -2,9 +2,9 @@
 
 namespace Tests\Services;
 
-use App\Events\StringCalculatorServiceAddOccurred;
+use App\Events\StringWasAdded;
 use App\Exceptions\StringCalculatorServiceException;
-use App\Interfaces\ILogger;
+use App\Interfaces\ILoggerService;
 use App\Services\StringCalculatorService;
 use Illuminate\Support\Facades\Event;
 use Mockery;
@@ -149,7 +149,7 @@ class StringCalculatorServiceTest extends TestCase
         $this->stringCalculatorService->add('');
         $this->stringCalculatorService->add('');
 
-        Event::assertDispatchedTimes(StringCalculatorServiceAddOccurred::class, 3);
+        Event::assertDispatchedTimes(StringWasAdded::class, 3);
     }
 
     /**
@@ -194,8 +194,8 @@ class StringCalculatorServiceTest extends TestCase
     public function it_should_logged_sum_when_call_add()
     {
         // mock
-        $this->mock(ILogger::class, function (Mockery\MockInterface $mock) {
-            $mock->shouldReceive('write')->once();
+        $this->mock(ILoggerService::class, function (Mockery\MockInterface $mock) {
+            $mock->shouldReceive()->write('1')->once();
         });
 
         $this->givenNumbers('1');
@@ -225,7 +225,8 @@ class StringCalculatorServiceTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->stringCalculatorService = new StringCalculatorService();
         parent::setUp();
+
+        $this->stringCalculatorService = $this->app->make(StringCalculatorService::class);
     }
 }

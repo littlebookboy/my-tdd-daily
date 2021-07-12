@@ -2,7 +2,8 @@
 
 namespace App\Services;
 
-use App\Events\StringCalculatorServiceAddOccurred;
+use App\Events\StringCalculatorAdded;
+use App\Events\StringWasAdded;
 use App\Exceptions\StringCalculatorServiceException;
 
 class StringCalculatorService
@@ -15,12 +16,21 @@ class StringCalculatorService
      * @param string $numbers
      * @return int
      */
-    public function add(string $numbers): int
+    public function add(string $numbers)
     {
         $this->updateAddCallingCounter();
 
-        $this->triggerStringCalculatorServiceAddOccurredEvent();
+        return tap($this->getSum($numbers), function ($sum) {
+            $this->stringWasAdded($sum);
+        });
+    }
 
+    /**
+     * @param string $numbers
+     * @return int
+     */
+    private function getSum(string $numbers): int
+    {
         if (empty($numbers)) {
             return 0;
         }
@@ -35,7 +45,9 @@ class StringCalculatorService
 
         $this->throwExceptionWhenNumberIsNegative($numbers);
 
-        return $this->sum($numbers);
+        $sum = $this->sum($numbers);
+
+        return $sum;
     }
 
     /**
@@ -154,9 +166,9 @@ class StringCalculatorService
         $this->addCalledCount++;
     }
 
-    private function triggerStringCalculatorServiceAddOccurredEvent(): void
+    private function stringWasAdded($sum): void
     {
-        event(StringCalculatorServiceAddOccurred::class);
+        event(new StringWasAdded($sum));
     }
 
     /**
