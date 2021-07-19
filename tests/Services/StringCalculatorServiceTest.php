@@ -194,9 +194,10 @@ class StringCalculatorServiceTest extends TestCase
     public function it_should_logged_sum_when_call_add()
     {
         // mock
-        $this->mock(ILoggerService::class, function (Mockery\MockInterface $mock) {
-            $mock->shouldReceive()->write('1')->once();
-        });
+        $this->mockLoggerInterface()
+            ->shouldReceive()
+            ->write('1')
+            ->once();
 
         $this->givenNumbers('1');
         $this->sumShouldBe(1);
@@ -228,5 +229,20 @@ class StringCalculatorServiceTest extends TestCase
         parent::setUp();
 
         $this->stringCalculatorService = $this->app->make(StringCalculatorService::class);
+    }
+
+    protected function tearDown(): void
+    {
+        parent::tearDown();
+
+        Mockery::close();
+    }
+
+    /**
+     * @return Mockery\MockInterface
+     */
+    private function mockLoggerInterface(): Mockery\MockInterface
+    {
+        return $this->mock(ILoggerService::class);
     }
 }
