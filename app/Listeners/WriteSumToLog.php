@@ -4,6 +4,7 @@ namespace App\Listeners;
 
 use App\Events\StringWasAdded;
 use App\Interfaces\ILoggerService;
+use App\Interfaces\INotify;
 
 class WriteSumToLog
 {
@@ -11,14 +12,20 @@ class WriteSumToLog
      * @var ILoggerService
      */
     private $loggerService;
+    /**
+     * @var INotify
+     */
+    private $notifyService;
 
     /**
      * WriteSumToLog constructor.
      * @param ILoggerService $loggerService
+     * @param INotify $notifyService
      */
-    public function __construct(ILoggerService $loggerService)
+    public function __construct(ILoggerService $loggerService, INotify $notifyService)
     {
         $this->loggerService = $loggerService;
+        $this->notifyService = $notifyService;
     }
 
     /**
@@ -29,6 +36,10 @@ class WriteSumToLog
      */
     public function handle(StringWasAdded $event)
     {
-        $this->loggerService->write($event->sum);
+        try {
+            $this->loggerService->write($event->sum);
+        } catch (\Exception $exception) {
+            $this->notifyService->notify($exception);
+        }
     }
 }

@@ -2,7 +2,6 @@
 
 namespace App\Services;
 
-use App\Events\StringCalculatorAdded;
 use App\Events\StringWasAdded;
 use App\Exceptions\StringCalculatorServiceException;
 

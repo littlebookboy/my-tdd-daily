@@ -5,9 +5,12 @@ namespace Tests\Services;
 use App\Events\StringWasAdded;
 use App\Exceptions\StringCalculatorServiceException;
 use App\Interfaces\ILoggerService;
+use App\Interfaces\INotify;
 use App\Services\StringCalculatorService;
+use Exception;
 use Illuminate\Support\Facades\Event;
 use Mockery;
+use Mockery\MockInterface;
 use Tests\TestCase;
 
 /**
@@ -200,6 +203,25 @@ class StringCalculatorServiceTest extends TestCase
 
     /**
      * @test
+     * 嘗試不同的測試案例命名方式
+     */
+    public function CallAdd_LogFailAndThrowException_GetExceptionMessageLogFail()
+    {
+        // stub: When calling Add() and the logger throws an exception
+        $this->instance(ILoggerService::class, new StubLoggerService());
+        $stubLoggerService = $this->app->make(ILoggerService::class);
+        $stubLoggerService->toThrow = true;
+
+        // mock: call notify() when writing log fail.
+        $this->mock(INotify::class)
+            ->shouldReceive('notify')
+            ->once();
+
+        $this->stringCalculatorService->add('');
+    }
+
+    /**
+     * @test
      */
     public function it_should_logged_sum_when_call_add()
     {
@@ -251,10 +273,24 @@ class StringCalculatorServiceTest extends TestCase
     }
 
     /**
-     * @return Mockery\MockInterface
+     * @return MockInterface
      */
-    private function mockLoggerInterface(): Mockery\MockInterface
+    private function mockLoggerInterface(): MockInterface
     {
         return $this->mock(ILoggerService::class);
+    }
+}
+
+class StubLoggerService implements ILoggerService
+{
+    public $toThrow = false;
+
+    /**
+     * @param string $log
+     * @param string $level
+     */
+    public function write(string $log, string $level = 'info'): void
+    {
+        throw_if($this->toThrow, Exception::class);
     }
 }
