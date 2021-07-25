@@ -247,6 +247,7 @@ class StringCalculatorServiceTest extends TestCase
         parent::tearDown();
 
         Mockery::close();
+        unset($this->stringCalculatorService);
     }
 
     /**
