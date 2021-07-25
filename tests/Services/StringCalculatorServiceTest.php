@@ -181,11 +181,21 @@ class StringCalculatorServiceTest extends TestCase
 
     /**
      * @test
+     * @dataProvider longerMultipleDelimitersProvider
      */
-    public function it_should_get_sum_when_using_longer_multiple_delimiters()
+    public function it_should_get_sum_more_testcases($numbers, $excepted)
     {
-        $this->givenNumbers('//[**][%%]\n1**2%%3');
-        $this->sumShouldBe(6);
+        $this->givenNumbers($numbers);
+        $this->sumShouldBe($excepted);
+    }
+
+    public function longerMultipleDelimitersProvider()
+    {
+        return [
+            ['//[**][%%]\n1**2%%3', 6],
+            ['//[zzz][@@]\n10zzz5@@1@@3', 19],
+            ['//[jkjk][@@]\n100jkjk800@@100jkjk55', 1055],
+        ];
     }
 
     /**
