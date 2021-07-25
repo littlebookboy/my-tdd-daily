@@ -200,7 +200,8 @@ class StringCalculatorServiceTest extends TestCase
             ->once();
 
         $this->givenNumbers('1');
-        $this->sumShouldBe(1);
+
+        $this->stringCalculatorService->add($this->numbers); // add() called
     }
 
     /**
