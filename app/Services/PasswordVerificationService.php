@@ -34,7 +34,11 @@ class PasswordVerificationService
         ];
     }
 
-    public function verify()
+    /**
+     * @return bool
+     * @throws \Throwable
+     */
+    public function verify(): bool
     {
         throw_if(
             $this->trueWhenPasswordInvalid['password_should_not_null'],
@@ -65,6 +69,8 @@ class PasswordVerificationService
             Exception::class,
             'password should have one number at least'
         );
+
+        return $this->isPasswordOK();
     }
 
     /**
@@ -72,7 +78,7 @@ class PasswordVerificationService
      *
      * @return bool
      */
-    public function isPasswordOK(): bool
+    private function isPasswordOK(): bool
     {
         $validNumber = 0;
 
