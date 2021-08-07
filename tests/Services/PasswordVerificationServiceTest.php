@@ -74,7 +74,7 @@ class PasswordVerificationServiceTest extends TestCase
     public function forceCheckRulesProvider()
     {
         return [
-            // password_should_large_than_8_chars
+            // password should be larger than 8 chars
             ['Ab123'],
             // password should have one lowercase letter at least
             ['AA123'],

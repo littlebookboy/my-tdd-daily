@@ -84,16 +84,39 @@ class PasswordVerificationService
 
         foreach ($this->trueWhenPasswordInvalid as $rule => $isInvalid) {
             // Add feature: password is never OK if item 1.4 is not true.
-            if ($rule === 'password_should_large_than_8_chars' ||
-                $rule === 'password_should_have_one_lowercase_letter_at_least'
-            ) {
-                if ($isInvalid) {
-                    return false;
-                }
+            if ($this->returnFalseIfSpecifyRuleInvalid($rule, $isInvalid)) {
+                return false;
             }
-            $validNumber += (!$isInvalid) ? 1 : 0;
+            $this->addOneIfRuleValid($validNumber, $isInvalid);
         }
 
         return $validNumber >= 3;
+    }
+
+    private function forceCheckRules()
+    {
+        return [
+           'password_should_large_than_8_chars',
+           'password_should_have_one_lowercase_letter_at_least',
+        ];
+    }
+
+    /**
+     * @param string $rule
+     * @param bool $isInvalid
+     * @return bool
+     */
+    private function returnFalseIfSpecifyRuleInvalid(string $rule, bool $isInvalid): bool
+    {
+        return in_array($rule, $this->forceCheckRules()) && $isInvalid;
+    }
+
+    /**
+     * @param $isInvalid
+     * @return void
+     */
+    private function addOneIfRuleValid(&$validNumber, $isInvalid): void
+    {
+        $validNumber += (!$isInvalid) ? 1 : 0;
     }
 }
