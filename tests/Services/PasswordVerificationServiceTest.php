@@ -57,6 +57,30 @@ class PasswordVerificationServiceTest extends TestCase
         $this->assertFalse($passwordVerificationService->verify());
     }
 
+    /**
+     * @param $password
+     * @dataProvider forceCheckRulesProvider
+     * @throws \Throwable
+     */
+    public function test_should_get_false_when_force_check_rules($password)
+    {
+        $this->expectException(Exception::class);
+        // 1. password should be larger than 8 chars
+        // 4. password should have one lowercase letter at least
+        $passwordVerificationService = new PasswordVerificationService($password);
+        $this->assertFalse($passwordVerificationService->verify());
+    }
+
+    public function forceCheckRulesProvider()
+    {
+        return [
+            // password_should_large_than_8_chars
+            ['Ab123'],
+            // password should have one lowercase letter at least
+            ['AA123'],
+        ];
+    }
+
     private function givenPassword($password): void
     {
         $passwordVerificationService = new PasswordVerificationService($password);

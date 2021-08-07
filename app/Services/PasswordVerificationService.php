@@ -82,7 +82,15 @@ class PasswordVerificationService
     {
         $validNumber = 0;
 
-        foreach ($this->trueWhenPasswordInvalid as $isInvalid) {
+        foreach ($this->trueWhenPasswordInvalid as $rule => $isInvalid) {
+            // Add feature: password is never OK if item 1.4 is not true.
+            if ($rule === 'password_should_large_than_8_chars' ||
+                $rule === 'password_should_have_one_lowercase_letter_at_least'
+            ) {
+                if ($isInvalid) {
+                    return false;
+                }
+            }
             $validNumber += (!$isInvalid) ? 1 : 0;
         }
 
