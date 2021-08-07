@@ -3,6 +3,7 @@
 namespace Tests\Services;
 
 use App\Services\PasswordVerificationService;
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class PasswordVerificationServiceTest extends TestCase
@@ -35,6 +36,31 @@ class PasswordVerificationServiceTest extends TestCase
     {
         $this->expectExceptionMessage('password should have one number at least');
         $this->givenPassword('AABBccdd');
+    }
+
+    public function test_should_get_true_when_pass_at_least_three_rules()
+    {
+        // not null
+        // at least one uppercase char
+        // at least one lowercase char
+        try {
+            $passwordVerificationService = new PasswordVerificationService('AA34567');
+            $passwordVerificationService->verify();
+        } catch (Exception $e) {
+            $this->assertTrue($passwordVerificationService->isPasswordOK());
+        }
+    }
+
+    public function test_should_get_false_when_pass_less_than_three_rules()
+    {
+        // not null
+        // at least one uppercase char
+        try {
+            $passwordVerificationService = new PasswordVerificationService('AABBCCD');
+            $passwordVerificationService->verify();
+        } catch (Exception $e) {
+            $this->assertFalse($passwordVerificationService->isPasswordOK());
+        }
     }
 
     private function givenPassword($password): void
